@@ -1,0 +1,203 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+a {
+  color: #bb86fc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Navbar Styles */
+#navbar {
+  background-color: #1f1f1f;
+  padding: 1em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#navbar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+#navbar li {
+  display: inline;
+}
+
+#navbar a {
+  color: #e0e0e0;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+}
+
+#navbar a:hover {
+  background-color: #333;
+}
+
+/* Main View Styles */
+#main-view {
+  padding: 2em;
+}
+
+/* Landing View Styles */
+#home .content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#home .description {
+  max-width: 50%;
+}
+
+#home .image img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#home h2 {
+  color: #bb86fc;
+  text-align: center;
+}
+
+/* Kards View Styles */
+#kards-view h2 {
+  color: #bb86fc;
+}
+
+#kard-container {
+  background-color: #1f1f1f;
+  padding: 1em;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#kard-list {
+  margin-top: 1em;
+}
+
+#kard-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#kard-list li {
+  background-color: #333;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#kard-list button {
+  background-color: #bb86fc;
+  border: none;
+  color: #121212;
+  padding: 0.5em;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#kard-list button:hover {
+  background-color: #a370f7;
+}
+
+/* Input Styles */
+#text-input {
+  margin-bottom: 1em;
+}
+
+#card-input {
+  width: calc(100% - 110px);
+  padding: 0.5em;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+}
+
+#add-card-button {
+  background-color: #bb86fc;
+  border: none;
+  color: #121212;
+  padding: 0.3em 0.6em;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 1em;
+  font-size: 0.8em;
+}
+
+#add-card-button:hover {
+  background-color: #a370f7;
+}
+
+/* Sign-In View Styles */
+#signin {
+  background-color: #1f1f1f;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 2em auto;
+}
+
+#signin h2 {
+  color: #bb86fc;
+}
+
+.form-group {
+  margin-bottom: 1em;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5em;
+  color: #e0e0e0;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5em;
+  box-sizing: border-box;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+}
+
+button {
+  width: 100%;
+  padding: 0.5em;
+  background-color: #bb86fc;
+  border: none;
+  color: #121212;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #a370f7;
+}
+
+p {
+  margin-top: 1em;
+  text-align: center;
+  color: #e0e0e0;
+}
