@@ -10,10 +10,32 @@ export class KardsView {
     const titleElm = document.createElement('h2');
     titleElm.innerText = 'Card List:';
 
+    const searchContainerElm = document.createElement('div');
+    const searchInputElm = document.createElement('input');
+    searchInputElm.id = 'search-input';
+    searchInputElm.type = 'text';
+    searchInputElm.placeholder = 'Enter Card Number:';
+
+    const searchButtonElm = document.createElement('button');
+    searchButtonElm.id = 'search-button';
+    searchButtonElm.innerText = 'Search';
+    searchButtonElm.addEventListener('click', async () => {
+      const cardNumber = searchInputElm.value.trim();
+      if (cardNumber) {
+        await this.#searchCard(cardNumber);
+      } else {
+        alert('Please enter a Card Number');
+      }
+    });
+
+    searchContainerElm.appendChild(searchInputElm);
+    searchContainerElm.appendChild(searchButtonElm);
+
     const kardContainerElm = document.createElement('div');
     kardContainerElm.id = 'kard-container';
 
     kardsViewElm.appendChild(titleElm);
+    kardsViewElm.appendChild(searchContainerElm);
     kardsViewElm.appendChild(kardContainerElm);
 
     const kardList = new KardList();
@@ -22,6 +44,22 @@ export class KardsView {
     kardsViewElm.appendChild(kardContainerElm);
 
     return kardsViewElm;
+  }
+
+  async #searchCard(cardNumber) {
+    try {
+      const response = await fetch(`http://localhost:3260/read?cardNumber=${cardNumber}`);
+      const data = await response.json();
+      
+      if (response.ok) {
+        alert(JSON.stringify(data.message));
+      } else {
+        alert(JSON.stringify(data.error));
+        console.error('Failed to fetch card:', data.error);
+      }
+    } catch (error) {
+      console.error('Error fetching card:', error);
+    }
   }
 }
 

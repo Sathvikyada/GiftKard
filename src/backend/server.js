@@ -21,10 +21,14 @@ async function createCard(response, cardNumber, id) {
   }
 }
 
-async function readCard(response, id) {
+async function readCard(response, cardNumber) {
   try {
-    const card = await db.loadCard(id);
-    response.status(200).json({ id: card._id, cardNumber: card.cardNumber });
+    const card = await db.loadCard(cardNumber);
+    if (card === null) {
+      response.status(200).json({ message: `Card (${cardNumber}) Not Found` });
+    } else {
+      response.status(200).json({ message: `Card (${cardNumber}) Found` });
+    }
   } catch (err) {
     response.status(404).json({ error: `Card ${id} Not Found` });
   }
@@ -85,7 +89,7 @@ app
   .route("/read")
   .get((request, response) => {
     const options = request.query;
-    readCard(response, options.id);
+    readCard(response, options.cardNumber);
   })
   .all(MethodNotAllowedHandler);
 

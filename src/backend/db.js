@@ -8,8 +8,15 @@ export async function saveCard(cardNumber, id) {
 }
 
 // Function to get a card by id
-export async function loadCard(id) {
-  return await db.get(id);
+export async function loadCard(cardNumber) {
+  const result = await db.allDocs({ include_docs: true });
+  const matchingCards = result.rows.filter(row => row.doc.cardNumber === cardNumber);
+  
+  if (matchingCards.length > 0) {
+    return matchingCards[0].doc;
+  } else {
+    return null;
+  }
 }
 
 // Function to update a card
