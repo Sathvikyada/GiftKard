@@ -4,13 +4,13 @@ import * as db from "./db.js";
 
 const headerFields = { "Content-Type": "application/json" };
 
-async function createCard(response, cardNumber) {
+async function createCard(response, cardNumber, id) {
   if (cardNumber === undefined) {
     response.status(400).json({ error: "Card Number Required" });
   } else {
     try {
-      await db.saveCard(cardNumber);
-      response.status(200).json({ message: `Card ${cardNumber} Created` });
+      await db.saveCard(cardNumber, id);
+      response.status(200).json({ message: `Card (${cardNumber}) Created` });
     } catch (err) {
       response.status(500).json({
         error: "Internal Server Error",
@@ -30,21 +30,21 @@ async function readCard(response, id) {
   }
 }
 
-async function updateCard(response, id, newCardNumber) {
+async function updateCard(response, id, newCardNumber, oldCardNumber) {
   try {
     await db.modifyCard(id, newCardNumber);
-    response.status(200).json({ message: `Card ${id} Updated` });
+    response.status(200).json({ message: `Card (${oldCardNumber}) Updated to (${newCardNumber})` });
   } catch (err) {
-    response.status(404).json({ error: `Card ${id} Not Found` });
+    response.status(404).json({ error: `Card (${oldCardNumber}) Not Found` });
   }
 }
 
-async function deleteCard(response, id) {
+async function deleteCard(response, id, cardNumber) {
   try {
     await db.removeCard(id);
-    response.status(200).json({ message: `Card ${id} Deleted` });
+    response.status(200).json({ message: `Card (${cardNumber}) Deleted` });
   } catch (err) {
-    response.status(404).json({ error: `Card ${id} Not Found` });
+    response.status(404).json({ error: `Card (${cardNumber}) Not Found` });
   }
 }
 
@@ -77,7 +77,7 @@ app
   .route("/create")
   .post((request, response) => {
     const options = request.query;
-    createCard(response, options.cardNumber);
+    createCard(response, options.cardNumber, options.id);
   })
   .all(MethodNotAllowedHandler);
 
@@ -93,7 +93,7 @@ app
   .route("/update")
   .put((request, response) => {
     const options = request.query;
-    updateCard(response, options.id, options.newCardNumber);
+    updateCard(response, options.id, options.newCardNumber, options.oldCardNumber);
   })
   .all(MethodNotAllowedHandler);
 
@@ -101,7 +101,7 @@ app
   .route("/delete")
   .delete((request, response) => {
     const options = request.query;
-    deleteCard(response, options.id);
+    deleteCard(response, options.id, options.cardNumber);
   })
   .all(MethodNotAllowedHandler);
 

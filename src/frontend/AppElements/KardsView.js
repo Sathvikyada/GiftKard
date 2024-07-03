@@ -69,12 +69,12 @@ class CardInput {
     inputElm.type = 'text';
     inputElm.placeholder = 'Enter Card Number:';
 
-    inputElm.addEventListener('keyup', event => {
+    inputElm.addEventListener('keyup', async event => {
       if (event.key !== 'Enter') {
         return;
       }
 
-      this.#events.publish('card-input', new Card(inputElm.value));
+      await this.#addCard(inputElm.value);
       inputElm.value = '';
     });
 
@@ -86,12 +86,29 @@ class CardInput {
     buttonElm.id = 'add-card-button';
     buttonElm.innerText = 'Add Card';
 
-    buttonElm.addEventListener('click', () => {
-      this.#events.publish('card-input', new Card(inputElm.value));
+    buttonElm.addEventListener('click', async () => {
+      await this.#addCard(inputElm.value);
       inputElm.value = '';
     });
 
     return buttonElm;
+  }
+
+  async #addCard(cardNumber) {
+    try {
+      const id = Math.random().toString(36);
+      const response = await fetch(`http://localhost:3260/create?cardNumber=${cardNumber}&id=${id}`, { method: 'POST' });
+      const data = await response.json();
+      if (response.ok) {
+        alert(JSON.stringify(data.message));
+        this.#events.publish('card-input', new Card(cardNumber, id));
+      } else {
+        alert(JSON.stringify(data.error));
+        console.error('Failed to create card:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error creating card:', error);
+    }
   }
 }
 
@@ -123,24 +140,58 @@ class CardList {
       this.#cards.push(card);
       const li = this.#makeCardItem(card);
       this.#list.appendChild(li);
-      this.#saveCards();
     });
 
     return cardListElm;
   }
 
   async #getCards() {
-    const savedCards = localStorage.getItem('cards');
-    return savedCards ? JSON.parse(savedCards).map(card => new Card(card.name, card.id)) : [];
+    try {
+      const response = await fetch('http://localhost:3260/all');
+      const data = await response.json();
+      if (response.ok) {
+        return data.map(card => new Card(card.cardNumber, card.id));
+      } else {
+        alert(JSON.stringify(data.message));
+        console.error('Failed to load cards:', response.statusText);
+        return [];
+      }
+    } catch (error) {
+      console.error('Error loading cards:', error);
+      return [];
+    }
   }
 
-  #saveCards() {
-    localStorage.setItem('cards', JSON.stringify(this.#cards));
+  async #deleteCard(id, cardNumber) {
+    try {
+      const response = await fetch(`http://localhost:3260/delete?id=${id}&cardNumber=${cardNumber}` , { method: 'DELETE' });
+      const data = await response.json();
+      if (response.ok) {
+        alert(JSON.stringify(data.message));
+        this.#cards = this.#cards.filter(card => card.id !== id);
+      } else {
+        alert(JSON.stringify(data.error));
+        console.error('Failed to delete card:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting card:', error);
+    }
   }
 
-  #deleteCard(id) {
-    this.#cards = this.#cards.filter(card => card.id !== id);
-    this.#saveCards();
+  async #updateCard(id, newCardNumber, oldCardNumber) {
+    try {
+      const response = await fetch(`http://localhost:3260/update?id=${id}&newCardNumber=${newCardNumber}&oldCardNumber=${oldCardNumber}`, { method: 'PUT' });
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.message);
+        this.#cards = this.#cards.map(card => (card.id === id ? new Card(newCardNumber, id) : card));
+      } else {
+        alert(data.error);
+        console.error('Failed to update card:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating card:', error);
+    }
   }
 
   #makeCardItem(card) {
@@ -148,17 +199,32 @@ class CardList {
     li.innerText = card.name;
     li.id = card.id;
 
-    const button = document.createElement('button');
-    button.innerText = 'Delete';
-    button.classList.add('deleteButton');
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = 'Delete';
+    deleteButton.classList.add('deleteButton');
 
-    button.addEventListener('click', () => {
+    deleteButton.addEventListener('click', async () => {
       this.#events.publish('delete-card', card);
       this.#list.removeChild(li);
-      this.#deleteCard(card.id);
+      await this.#deleteCard(card.id, card.name);
     });
 
-    li.appendChild(button);
+    const updateButton = document.createElement('button');
+    updateButton.innerText = 'Update';
+    updateButton.classList.add('updateButton');
+
+    updateButton.addEventListener('click', async () => {
+      const newCardNumber = prompt('Enter new card number:', card.name);
+      if (newCardNumber) {
+        await this.#updateCard(card.id, newCardNumber, card.name);
+        li.innerText = newCardNumber;
+        li.appendChild(deleteButton);
+        li.appendChild(updateButton);
+      }
+    });
+
+    li.appendChild(deleteButton);
+    li.appendChild(updateButton);
     return li;
   }
 }

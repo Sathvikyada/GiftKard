@@ -3,8 +3,8 @@ import PouchDB from "pouchdb";
 const db = new PouchDB("kards");
 
 // Function to add a new card number
-export async function saveCard(cardNumber) {
-  await db.put({ _id: new Date().toISOString(), cardNumber });
+export async function saveCard(cardNumber, id) {
+  await db.put({ _id: id, cardNumber });
 }
 
 // Function to get a card by id
