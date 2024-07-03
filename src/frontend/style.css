@@ -127,6 +127,21 @@ a:hover {
   margin-right: 0.2em;
 }
 
+/* Info Message Styles */
+#info-message {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #a370f7;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 1000;
+}
+
 /* Input Styles */
 #text-input {
   display: flex;

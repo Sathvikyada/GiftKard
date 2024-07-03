@@ -7,6 +7,10 @@ export class KardsView {
     const kardsViewElm = document.createElement('div');
     kardsViewElm.id = 'kards-view';
 
+    const infoMessageElm = document.createElement('div');
+    infoMessageElm.id = 'info-message';
+    kardsViewElm.appendChild(infoMessageElm);
+
     const titleElm = document.createElement('h2');
     titleElm.innerText = 'Card List:';
 
@@ -24,7 +28,7 @@ export class KardsView {
       if (cardNumber) {
         await this.#searchCard(cardNumber);
       } else {
-        alert('Please enter a Card Number');
+        this.#showInfoMessage('Please enter a Card Number');
       }
     });
 
@@ -52,14 +56,23 @@ export class KardsView {
       const data = await response.json();
       
       if (response.ok) {
-        alert(JSON.stringify(data.message));
+        this.#showInfoMessage(data.message);
       } else {
-        alert(JSON.stringify(data.error));
+        this.#showInfoMessage(data.error);
         console.error('Failed to fetch card:', data.error);
       }
     } catch (error) {
       console.error('Error fetching card:', error);
     }
+  }
+
+  #showInfoMessage(message) {
+    const infoMessageElm = document.getElementById('info-message');
+    infoMessageElm.innerText = message;
+    infoMessageElm.style.opacity = 1;
+    setTimeout(() => {
+      infoMessageElm.style.opacity = 0;
+    }, 5000);
   }
 }
 
@@ -138,15 +151,24 @@ class CardInput {
       const response = await fetch(`http://localhost:3260/create?cardNumber=${cardNumber}&id=${id}`, { method: 'POST' });
       const data = await response.json();
       if (response.ok) {
-        alert(JSON.stringify(data.message));
+        this.#showInfoMessage(data.message);
         this.#events.publish('card-input', new Card(cardNumber, id));
       } else {
-        alert(JSON.stringify(data.error));
+        this.#showInfoMessage(data.error);
         console.error('Failed to create card:', response.statusText);
       }
     } catch (error) {
       console.error('Error creating card:', error);
     }
+  }
+
+  #showInfoMessage(message) {
+    const infoMessageElm = document.getElementById('info-message');
+    infoMessageElm.innerText = message;
+    infoMessageElm.style.opacity = 1;
+    setTimeout(() => {
+      infoMessageElm.style.opacity = 0;
+    }, 5000);
   }
 }
 
@@ -190,7 +212,7 @@ class CardList {
       if (response.ok) {
         return data.map(card => new Card(card.cardNumber, card.id));
       } else {
-        alert(JSON.stringify(data.message));
+        this.#showInfoMessage(data.message);
         console.error('Failed to load cards:', response.statusText);
         return [];
       }
@@ -205,10 +227,10 @@ class CardList {
       const response = await fetch(`http://localhost:3260/delete?id=${id}&cardNumber=${cardNumber}` , { method: 'DELETE' });
       const data = await response.json();
       if (response.ok) {
-        alert(JSON.stringify(data.message));
+        this.#showInfoMessage(data.message);
         this.#cards = this.#cards.filter(card => card.id !== id);
       } else {
-        alert(JSON.stringify(data.error));
+        this.#showInfoMessage(data.error);
         console.error('Failed to delete card:', response.statusText);
       }
     } catch (error) {
@@ -221,10 +243,10 @@ class CardList {
       const response = await fetch(`http://localhost:3260/update?id=${id}&newCardNumber=${newCardNumber}&oldCardNumber=${oldCardNumber}`, { method: 'PUT' });
       const data = await response.json();
       if (response.ok) {
-        alert(data.message);
+        this.#showInfoMessage(data.message);
         this.#cards = this.#cards.map(card => (card.id === id ? new Card(newCardNumber, id) : card));
       } else {
-        alert(data.error);
+        this.#showInfoMessage(data.error);
         console.error('Failed to update card:', response.statusText);
       }
     } catch (error) {
@@ -264,6 +286,15 @@ class CardList {
     li.appendChild(deleteButton);
     li.appendChild(updateButton);
     return li;
+  }
+
+  #showInfoMessage(message) {
+    const infoMessageElm = document.getElementById('info-message');
+    infoMessageElm.innerText = message;
+    infoMessageElm.style.opacity = 1;
+    setTimeout(() => {
+      infoMessageElm.style.opacity = 0;
+    }, 5000);
   }
 }
 
