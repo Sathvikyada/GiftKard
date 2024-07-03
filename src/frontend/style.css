@@ -83,6 +83,7 @@ a:hover {
   padding: 1em;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 1em;
 }
 
 #kard-list {
@@ -109,22 +110,32 @@ a:hover {
   background-color: #bb86fc;
   border: none;
   color: #121212;
-  padding: 0.5em;
+  width: 80px;
+  height: 30px;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 0.8em;
 }
 
 #kard-list button:hover {
   background-color: #a370f7;
 }
 
+#kard-list .deleteButton,
+#kard-list .updateButton {
+  flex: 0 0 auto;
+  margin-right: 0.2em;
+}
+
 /* Input Styles */
 #text-input {
+  display: flex;
+  align-items: center;
   margin-bottom: 1em;
 }
 
 #card-input {
-  width: calc(100% - 110px);
+  flex: 1;
   padding: 0.5em;
   border-radius: 4px;
   border: 1px solid #333;
@@ -132,18 +143,21 @@ a:hover {
   color: #e0e0e0;
 }
 
-#add-card-button {
+#add-card-button,
+#search-button {
   background-color: #bb86fc;
   border: none;
   color: #121212;
-  padding: 0.3em 0.6em;
+  width: 80px;
+  height: 30px;
   border-radius: 4px;
   cursor: pointer;
-  margin-left: 1em;
+  margin-left: 0.5em;
   font-size: 0.8em;
 }
 
-#add-card-button:hover {
+#add-card-button:hover,
+#search-button:hover {
   background-color: #a370f7;
 }
 
