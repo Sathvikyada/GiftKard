@@ -230,3 +230,44 @@ p {
   text-align: center;
   color: #e0e0e0;
 }
+
+/* Help Page Styles */
+#help .content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#help #leftHelp {
+  flex: 1;
+  padding: 2em;
+  color: #e0e0e0;
+  text-align: center;
+}
+
+#help #leftHelp h2 {
+  color: #bb86fc;
+  margin-top: 1em;
+}
+
+#help #leftHelp p {
+  line-height: 1.6;
+  color: #e0e0e0;
+}
+
+#help #rightHelp {
+  flex: 1;
+  padding: 2em;
+  text-align: center;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#help #rightHelp img {
+  max-width: 100%;
+  max-height: 325px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
