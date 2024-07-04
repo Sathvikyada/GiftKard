@@ -1,11 +1,15 @@
+// Define Landing class for rendering landing page content
 export class Landing {
 
   constructor () {}
 
+  // Asynchronously render method creates and returns the landing page element
   async render() {
+    // Create a div element for landing page content
     const homeElm = document.createElement('div');
-    homeElm.id = 'home';
+    homeElm.id = 'home'; // Set id attribute of landing page
 
+    // Set inner HTML content for landing page using template literals
     homeElm.innerHTML = `
       <div class="content">
         <div class="description">
@@ -18,6 +22,7 @@ export class Landing {
       </div>
     `;
 
+    // Return the constructed landing page element
     return homeElm;
   }
 }

@@ -1,11 +1,15 @@
+// Define Help class for rendering developer and contact information
 export class Help {
 
   constructor () {}
 
+  // Asynchronously render method creates and returns the help section element
   async render() {
+    // Create a div element for help section
     const helpElm = document.createElement('div');
-    helpElm.id = 'help';
+    helpElm.id = 'help'; // Set id attribute of help section
 
+    // Set inner HTML content for help section using template literals
     helpElm.innerHTML = `
     <div id="containerHelp" class="content">
         <div id="leftHelp">
@@ -21,6 +25,7 @@ export class Help {
     </div>
     `;
 
+    // Return the constructed help section element
     return helpElm;
   }
 }

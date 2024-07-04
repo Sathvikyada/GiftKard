@@ -1,11 +1,15 @@
+// Define SignIn class for rendering sign-in form
 export class SignIn {
 
   constructor () {}
 
+  // Asynchronously render method creates and returns the sign-in form element
   async render() {
+    // Create a div element for sign-in form
     const signinElm = document.createElement('div');
-    signinElm.id = 'signin';
+    signinElm.id = 'signin'; // Set id attribute of sign-in form
 
+    // Set inner HTML content for sign-in form using template literals
     signinElm.innerHTML = `
       <h2>Sign In</h2>
       <form id="signin-form">
@@ -22,6 +26,7 @@ export class SignIn {
       <p>Don't have an account? <a href="#signup">Sign Up</a></p>
     `;
 
+    // Return the constructed sign-in form element
     return signinElm;
   }
 }
